@@ -12,7 +12,7 @@ export class GifsService {
   get historial() {
     return [...this._historial];
   }
-
+  
   constructor( private http: HttpClient ) {}
 
   agregarGifs( query: string = '' ) {
