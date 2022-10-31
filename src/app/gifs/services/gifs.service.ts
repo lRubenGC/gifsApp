@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SearchGifsResponse, Gif } from '../interfaces/gifs.interface';
 
@@ -8,6 +8,7 @@ import { SearchGifsResponse, Gif } from '../interfaces/gifs.interface';
 export class GifsService {
 
   private apiKEY: string = "I2wHH1WmOleLH4vyXSeW9IIwtBhHvZlx";
+  private servicioUrl: string = "https://api.giphy.com/v1/gifs";
   private _historial: string[] = [];
 
   public resultados: Gif[] = [];
@@ -24,7 +25,8 @@ export class GifsService {
     //Tambien se puede hacer de la siguiente manera:
     //this._historial = JSON.parse(localStorage.getItem('historial')!) || [];
     //Hace la misma comprobacion de si existe el item, pero sin usar un If
-    //Ejemplo para mostrar los resultados del historial de otra manera
+
+    //Ejemplo para mostrar los resultados del historial de otra manera:
     this.resultados = JSON.parse(localStorage.getItem('resultados')!) || [];
 
   }
@@ -39,7 +41,12 @@ export class GifsService {
 
     }
 
-    this.http.get<SearchGifsResponse>(`https://api.giphy.com/v1/gifs/search?api_key=I2wHH1WmOleLH4vyXSeW9IIwtBhHvZlx&q=${ query }&limit=10`)
+    const params = new HttpParams()
+          .set('api_key', this.apiKEY)
+          .set('limit', '20')
+          .set('q', query);
+
+    this.http.get<SearchGifsResponse>(`${this.servicioUrl}/search`, { params })
           .subscribe( ( resp ) => {
             this.resultados = resp.data;
             localStorage.setItem('resultados', JSON.stringify(this.resultados));

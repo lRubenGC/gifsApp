@@ -7,7 +7,9 @@
         <a 
             href="#"
             class="list-group-item list-group-item-action"
-            *ngFor="let busqueda of historial">
+            *ngFor="let busqueda of historial"
+            (click)="buscar( busqueda )"
+            >
             {{ busqueda | titlecase }}
         </a>
     </div>
